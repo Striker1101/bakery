@@ -1,0 +1,35 @@
+#nav-list {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+}
+
+footer {
+  background-color: #323540;
+  display: flex;
+  color: white;
+  flex-direction: column;
+  width: 100%;
+}
+
+footer > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+footer > div > img {
+  position: relative;
+  right: 5%;
+  bottom: 30px;
+}
+
+ul > h4 {
+  color: #b7a968;
+}
+
+.copyright {
+  text-align: end;
+}
