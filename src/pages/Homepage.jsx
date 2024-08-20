@@ -1,13 +1,14 @@
 import React from "react";
 import "./styleSheet/homepage.css";
+import ImageSlider from "../components/ImageSlider";
 export default function Homepage() {
   function handleClick() {}
-  document.getElementById("btn").onclick = () => {};
+
   return (
     <div>
-      <button id="btn" onClick={handleClick}>
-        click me{" "}
-      </button>
+      <div>
+        <ImageSlider />
+      </div>
     </div>
   );
 }
