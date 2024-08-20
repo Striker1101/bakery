@@ -33,3 +33,22 @@ ul > h4 {
 .copyright {
   text-align: end;
 }
+.App {
+  position: relative;
+}
+nav,
+.navbar {
+  position: fixed !important;
+  background-color: transparent !important;
+  background: transparent;
+  z-index: 9999;
+  width: 100%;
+}
+.navbar-toggler {
+  color: white !important;
+  background-color: white !important;
+}
+
+.nav-list {
+  color: white !important;
+}

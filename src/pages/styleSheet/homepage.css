@@ -1,0 +1,24 @@
+#slider {
+  position: relative;
+}
+
+#slider > p {
+  position: absolute;
+  z-index: 1000;
+  top: 300px;
+  color: white;
+  margin: 30px;
+  width: 40%;
+  font-size: x-large;
+  font-weight: 600;
+}
+
+.btn_link {
+  background-color: #b7a968;
+  border: transparent;
+  list-style: none;
+  border-radius: 20px;
+  color: white;
+  text-decoration: none;
+  list-style: none;
+}
