@@ -1,6 +1,6 @@
 #nav-list {
   display: flex !important;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: end;
   align-items: center;
 }
@@ -36,19 +36,80 @@ ul > h4 {
 .App {
   position: relative;
 }
-nav,
 .navbar {
-  position: fixed !important;
-  background-color: transparent !important;
-  background: transparent;
-  z-index: 9999;
-  width: 100%;
-}
-.navbar-toggler {
-  color: white !important;
-  background-color: white !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
 }
 
-.nav-list {
-  color: white !important;
+.navbar-brand img.logo {
+  width: 100px;
+  height: 100px;
+}
+
+.navbar-toggle {
+  display: none;
+  font-size: 24px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar-collapse {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.nav-lists {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-lists li {
+  margin-left: 20px;
+}
+
+.nav-lists li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+}
+
+.nav-lists li a:hover {
+  color: #ddd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-collapse {
+    display: none;
+    align-items: center;
+    width: 100%;
+  }
+  #nav-list {
+    flex-direction: column;
+  }
+
+  .navbar-collapse.active {
+    display: flex;
+  }
+
+  .navbar-toggle {
+    display: block;
+  }
+
+  .nav-lists {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-lists li {
+    margin: 10px 0;
+  }
 }

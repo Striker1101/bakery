@@ -1,0 +1,25 @@
+.container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+h1 {
+  font-family: "Georgia", serif;
+  color: #343a40;
+}
+
+h3 {
+  color: #495057;
+}
+
+ul {
+  list-style-type: square;
+  padding-left: 20px;
+}
+
+p,
+li {
+  font-size: 16px;
+  color: #6c757d;
+}
