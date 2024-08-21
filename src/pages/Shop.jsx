@@ -6,16 +6,17 @@ import "./styleSheet/shop.css";
 export default function Shop() {
   const datas = [
     {
-      name: "product1",
-      image: "null",
-      price: 20.9,
+      name: "Chocolate Cake",
+      image: "https://via.placeholder.com/100",
+      category: "Cakes",
+      price: 15.99,
     },
-    { name: "product1", image: "null", price: 20.9 },
-    { name: "product1", image: "null", price: 20.9 },
-    { name: "product1", image: "null", price: 20.9 },
-    { name: "product1", image: "null", price: 20.9 },
-    { name: "product1", image: "null", price: 20.9 },
-    { name: "product1", image: "null", price: 20.9 },
+    {
+      name: "Croissant",
+      image: "https://via.placeholder.com/100",
+      category: "Pastries",
+      price: 2.49,
+    },
   ];
 
   const [carts, setCarts] = useState([]);

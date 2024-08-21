@@ -7,7 +7,7 @@ function Cards({ datas, handleAddCart }) {
       {datas.map((data, index) => {
         return (
           <Card key={index} style={{ width: "18rem" }}>
-            <Card.Img variant="top" src={data.img} />
+            <Card.Img variant="top" src={data.image} />
             <Card.Body>
               <Card.Title>{data.name}</Card.Title>
               <Card.Text>${data.price}</Card.Text>
