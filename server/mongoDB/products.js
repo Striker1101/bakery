@@ -14,14 +14,14 @@ exports.products = [
     price: 20.9,
   },
   {
-    id: 1,
+    id: 2,
     name: "chocolate cake",
     category_id: 2,
     size_id: 1,
     price: 20.9,
   },
   {
-    id: 1,
+    id: 3,
     name: "coconut bread",
     category_id: 2,
     size_id: 2,
