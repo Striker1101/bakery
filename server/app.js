@@ -21,7 +21,7 @@ app.use("/api/categories", require("./routes/categories"));
 app.use("/api/final", require("./routes/final"));
 app.use("/api/products", require("./routes/products"));
 app.use("/api/purchases", require("./routes/purchases"));
-app.use("/api/sizes", require("./routes/sizies"));
+app.use("/api/sizes", require("./routes/sizes"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
