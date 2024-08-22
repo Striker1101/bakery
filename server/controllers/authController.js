@@ -1,4 +1,5 @@
-const auth = require("../mongoDB/users");
+let users = require("../mongoDB/users");
+const { check, validationResult } = require("express-validator");
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix auth
@@ -6,3 +7,48 @@ exports.create = async (req, res) => {}; // create a new auth
 exports.edit = async (req, res) => {}; // edit a auth
 exports.update = async (req, res) => {}; // update a auth
 exports.delete = async (req, res) => {}; // delete a auth
+
+exports.register = [
+  check("full_name")
+    .notEmpty()
+    .withMessage("full name is required")
+    .isLength({ min: 3 })
+    .withMessage("full name must be more than 3 characters"),
+
+  check("email").isEmail().withMessage("please provide a valid email"),
+
+  check("password")
+    .isLength({ min: 6 })
+    .withMessage("password must be at least six characters in length"),
+
+  check("confirm_password").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("password confirmation does not match password");
+    }
+    return true;
+  }),
+
+  //controller function
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { full_name, email, password, currency } = req.body;
+
+    const data = {
+      id: users.users.length + 1,
+      username: full_name,
+      email: email,
+      password: password,
+      created_at: new Date().toLocaleDateString(),
+      updated_at: new Date().toLocaleDateString(),
+      currency: currency,
+    };
+
+    users.users.push(data);
+
+    return res.status(200).json(data);
+  },
+];

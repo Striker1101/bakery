@@ -17,4 +17,7 @@ router.put("/:id", authController.update); // update a auth
 
 router.delete("/:id", authController.delete); // delete a auth
 
+//custom routes
+router.post("/register", authController.register); //register a new user
+
 module.exports = router;
