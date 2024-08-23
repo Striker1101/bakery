@@ -11,14 +11,17 @@
 
     ## Response
       {
-       "id": 3,
-       "username": "jacob",
-       "email": "jacob@mail.com",
-       "password": "12345678",
-       "created_at": "8/23/2024",
-       "updated_at": "8/23/2024",
-       "currency": "CAD"
-      }
+    "newUser": {
+         "id": 3,
+          "username": "jacob",
+         "email": "jacob@mail.com",
+         "password": "$2a$10$9cGJv5RCrkEjb./wKEEbyuJclWOl97FBWNXa7gaI4bEz/cLgBIO8i",
+         "created_at": "8/23/2024",
+         "updated_at": "8/23/2024",
+         "currency": "CAD"
+          },
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.       eyJpZCI6MywidXNlcm5hbWUiOiJqYWNvYiIsImVtYWlsIjoiamFjb2JAbWFpbC5jb20iLCJpYXQiOjE3Mj    Q0MDg4NzMsImV4cCI6MTcyNDQxOTY3M30.GKyLoJg8DLIP5dgNmaaxopakUszCu8MAkIBZNQ_7cqU"
+           }
 
     ## Error Responses
       message("full name must be more than 3 characters")(400)

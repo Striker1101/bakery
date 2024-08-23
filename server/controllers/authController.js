@@ -100,11 +100,29 @@ exports.login = [
     }
 
     //check if password matches
-    if (user.password !== password) {
-      return res.status(401).json({ error: "Incorrect Password" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Incorrect password" });
     }
 
+    //create JWT payload
+    const payload = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
+
+    const token = jwt.sign(payload, "cat", { expiresIn: "3h" });
+
     //if email and password is correct, send success message
-    res.json({ message: "Login Successful", user });
+    return res.json({
+      message: "Login Successful",
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+      token,
+    });
   },
 ];
