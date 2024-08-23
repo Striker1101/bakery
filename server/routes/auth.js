@@ -20,4 +20,6 @@ router.delete("/:id", authController.delete); // delete a auth
 //custom routes
 router.post("/register", authController.register); //register a new user
 
+router.post("/login", authController.login); //register a new user
+
 module.exports = router;

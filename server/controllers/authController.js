@@ -35,8 +35,10 @@ exports.register = [
       return res.status(400).json({ errors: errors.array() });
     }
 
+    //destructing the req.body data to get the fields
     const { full_name, email, password, currency } = req.body;
 
+    //create a new data object from the req datas
     const data = {
       id: users.users.length + 1,
       username: full_name,
@@ -47,8 +49,42 @@ exports.register = [
       currency: currency,
     };
 
+    // push data object to users
     users.users.push(data);
 
     return res.status(200).json(data);
+  },
+];
+
+exports.login = [
+  check("email").isEmail().withMessage("please provide a valid email"),
+
+  check("password")
+    .isLength({ min: 6 })
+    .withMessage("password must be at least six characters in length"),
+
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email, password } = req.boby;
+
+    //Find user by email in Users Model/Schemes
+    const user = users.users.find((user) => user.email === email);
+
+    //Handle case when user is not found
+    if (!user) {
+      res.status(404).json({ error: "Email not in Database" });
+    }
+
+    //check if password matches
+    if (user.password !== password) {
+      return res.status(401).json({ error: "Incorrect Password" });
+    }
+
+    //if email and password is correct, send success message
+    res.json({ message: "Login Successful", user });
   },
 ];
