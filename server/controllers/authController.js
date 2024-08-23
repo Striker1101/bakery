@@ -69,14 +69,14 @@ exports.login = [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.boby;
+    const { email, password } = req.body;
 
     //Find user by email in Users Model/Schemes
     const user = users.users.find((user) => user.email === email);
 
     //Handle case when user is not found
     if (!user) {
-      res.status(404).json({ error: "Email not in Database" });
+      return res.status(404).json({ error: "Email not in Database" });
     }
 
     //check if password matches
