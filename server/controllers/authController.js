@@ -1,7 +1,9 @@
 let users = require("../mongoDB/users");
+const sendEmail = require("../mail");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix auth
@@ -126,3 +128,43 @@ exports.login = [
     });
   },
 ];
+
+exports.ForgetPassword = (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+
+  const user = users.users.find((item) => item.email === email);
+
+  if (!user) {
+    res.status(404).json({ message: "Email not found " });
+  }
+  //reset user password_token
+  const generate_random_token = Math.floor(Math.random() * 1000000);
+  user.password_token = generate_random_token;
+
+  user.password_token_timer = new Date().toISOString();
+
+  //update users model
+  const userindex = users.users.findIndex((u) => u.id === user.id);
+  users.users[userindex] = user;
+  //send email to user
+
+  sendEmail(
+    email,
+    "Password Reset Request",
+    `here is your link to reset your password
+     ${process.env.BACKEND_PORT}/api/auth/forget_password_confirmation?token=${generate_random_token}`
+  )
+    .then(() => {
+      res
+        .status(200)
+        .json({ message: "password reset email sent succesfully" });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: " Error sending mail",
+        error: err.message,
+      });
+    });
+  res.end();
+};

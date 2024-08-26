@@ -3,6 +3,7 @@ var router = express.Router();
 
 const authController = require("../controllers/authController");
 
+//default route
 router.get("/", authController.index); // list all
 
 router.get("/new", authController.create); //create form
@@ -21,5 +22,7 @@ router.delete("/:id", authController.delete); // delete a auth
 router.post("/register", authController.register); //register a new user
 
 router.post("/login", authController.login); //register a new user
+
+router.post("/forget_password", authController.ForgetPassword);
 
 module.exports = router;

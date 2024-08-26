@@ -7,6 +7,8 @@ exports.users = [
     created_at: "2024/04/30",
     updated_at: "2024/04/30",
     currency: "USD",
+    password_token: "0000",
+    password_token_timer: null,
   },
   {
     id: 1,
@@ -16,5 +18,7 @@ exports.users = [
     created_at: "2024/04/30",
     updated_at: "2024/04/30",
     currency: "NGN",
+    password_token: "0000",
+    password_token_timer: null,
   },
 ];
