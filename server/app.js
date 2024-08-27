@@ -3,6 +3,8 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const passport = require("passport");
+require("./passport");
 
 var app = express();
 
@@ -11,9 +13,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "build")));
+app.use(passport.initialize()); //initialize passport middleware
 
 //all routes
-app.use("/api/users", require("./routes/users"));
+app.use(
+  "/api/users",
+  passport.authenticate("jwt", { session: false }), // protect route from unauthenticated users
+  require("./routes/users")
+);
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/carts", require("./routes/carts"));
 app.use("/api/categories", require("./routes/categories"));

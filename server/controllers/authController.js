@@ -151,8 +151,8 @@ exports.ForgetPassword = (req, res) => {
   //update users model
   const userindex = users.users.findIndex((u) => u.id === user.id);
   users.users[userindex] = user;
-  //send email to user
 
+  //send email to user
   sendEmail(
     email,
     "Password Reset Request",
