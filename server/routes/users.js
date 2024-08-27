@@ -1,14 +1,14 @@
 var express = require("express");
 var router = express.Router();
 const usersController = require("../controllers/usersController");
-
+const userControl = require("../middleware/userControl");
 router.get("/", usersController.index); // list all
 
 router.get("/new", usersController.create); //create form
 
 router.post("/", usersController.create); //create a new user
 
-router.get("/:id", usersController.show); //show a single user
+router.get("/:id", userControl, usersController.show); //show a single user
 
 router.get("/:id/edit", usersController.edit); //edit form
 
