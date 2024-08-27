@@ -4,6 +4,9 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const _environment = require("../Helpers/config");
+
+const environment = _environment.environment;
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix auth
@@ -57,6 +60,8 @@ exports.register = [
       username: full_name,
       email: email,
       password: hashedPassword,
+      password_token: "0000",
+      password_token_timer: null,
       created_at: new Date().toLocaleDateString(),
       updated_at: new Date().toLocaleDateString(),
       currency: currency,
@@ -131,12 +136,11 @@ exports.login = [
 
 exports.ForgetPassword = (req, res) => {
   const { email } = req.body;
-  console.log(email);
 
   const user = users.users.find((item) => item.email === email);
 
   if (!user) {
-    res.status(404).json({ message: "Email not found " });
+    return res.status(404).json({ message: "Email not found " });
   }
   //reset user password_token
   const generate_random_token = Math.floor(Math.random() * 1000000);
@@ -153,18 +157,17 @@ exports.ForgetPassword = (req, res) => {
     email,
     "Password Reset Request",
     `here is your link to reset your password
-     ${process.env.BACKEND_PORT}/api/auth/forget_password_confirmation?token=${generate_random_token}`
+     ${environment.BACKEND_PORT}/api/auth/forget_password_confirmation?token=${generate_random_token}`
   )
     .then(() => {
-      res
+      return res
         .status(200)
         .json({ message: "password reset email sent succesfully" });
     })
     .catch((err) => {
-      res.status(500).json({
+      return res.status(500).json({
         message: " Error sending mail",
         error: err.message,
       });
     });
-  res.end();
 };

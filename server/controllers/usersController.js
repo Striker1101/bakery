@@ -1,6 +1,8 @@
 const users = require("../mongoDB/users");
 
-exports.index = async (req, res) => {}; // get all | list all
+exports.index = (req, res) => {
+  res.json(users.users);
+}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix user
 exports.create = async (req, res) => {}; // create a new user
 exports.edit = async (req, res) => {}; // edit a user

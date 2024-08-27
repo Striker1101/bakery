@@ -1,18 +1,20 @@
-const nodemailer = require("nodemailer");
 require("dotenv").config();
+const _environment = require("./Helpers/config");
+const nodemailer = require("nodemailer");
+const environment = _environment.environment;
 
 const transporter = nodemailer.createTransport({
-  host: process.env.MAILTRAP_HOST,
-  port: process.env.MAILTRAP_PORT,
+  host: environment.MAILTRAP_HOST,
+  port: environment.MAILTRAP_PORT,
   auth: {
-    user: process.env.MAILTRAP_USER,
-    pass: process.env.MAILTRAP_PASS,
+    user: environment.MAILTRAP_USER,
+    pass: environment.MAILTRAP_PASS,
   },
 });
 
 const sendEmail = (to, subject, text) => {
   const mailOption = {
-    from: process.env.APP_NAME + " " + process.env.APP_EMAIL,
+    from: environment.APP_NAME + " " + environment.APP_EMAIL,
     to: to,
     subject: subject,
     text: text,
