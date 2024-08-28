@@ -8,5 +8,5 @@ exports.environment = {
   BACKEND_PORT: "http://127.0.0.1:3001",
   FRONTEND_PORT: "http://127.0.0.1:3000",
   MONGODB_URI:
-    "mongodb+srv://goodluckodemilin:<YOUNGSWAG>@cluster0.uyvc4ay.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    "mongodb+srv://goodluckodemilin:YOUNGswag@cluster0.uyvc4ay.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
 };

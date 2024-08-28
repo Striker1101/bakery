@@ -5,8 +5,12 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const passport = require("passport");
 require("./passport");
+const connectDB = require("./database");
 
 var app = express();
+
+//connect to MongoDB
+connectDB();
 
 app.use(logger("dev"));
 app.use(express.json());
