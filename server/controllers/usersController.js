@@ -1,8 +1,8 @@
-const _users = require("../mongoDB/users");
+const User = require("../models/User");
 
-exports.index = (req, res) => {
+exports.index = async (req, res) => {
   try {
-    const users = _users.users;
+    const users = await User.find();
     return res.status(200).json(users);
   } catch (error) {
     return res

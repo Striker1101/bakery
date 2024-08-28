@@ -1,4 +1,4 @@
-const _carts = require("../mongoDB/carts");
+const _carts = require("../models/carts");
 
 exports.index = async (req, res) => {
   try {

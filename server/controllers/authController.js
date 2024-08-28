@@ -1,4 +1,4 @@
-let users = require("../mongoDB/users");
+let User = require("../models/User");
 const sendEmail = require("../mail");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -46,7 +46,7 @@ exports.register = [
     const { full_name, email, password, currency } = req.body;
 
     //check if the user alreadu exsit
-    const existingUser = users.users.find((user) => user.email === email);
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({ error: "Email is already in use" });
@@ -55,8 +55,7 @@ exports.register = [
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //create a new data object from the req datas
-    const newUser = {
-      id: users.users.length + 1,
+    const newUser = new User({
       username: full_name,
       email: email,
       password: hashedPassword,
@@ -65,10 +64,10 @@ exports.register = [
       created_at: new Date().toLocaleDateString(),
       updated_at: new Date().toLocaleDateString(),
       currency: currency,
-    };
+    });
 
     // push data object to users
-    users.users.push(newUser);
+    await newUser.save();
 
     //create a new jwt payload
     const payload = {

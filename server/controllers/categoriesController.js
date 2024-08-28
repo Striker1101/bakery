@@ -1,4 +1,4 @@
-const categories = require("../mongoDB/categories");
+const categories = require("../models/categories");
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix categories

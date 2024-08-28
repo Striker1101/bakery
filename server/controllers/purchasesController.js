@@ -1,4 +1,4 @@
-const purchases = require("../mongoDB/purchases");
+const purchases = require("../models/purchases");
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix purchases

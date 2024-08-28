@@ -1,4 +1,4 @@
-const products = require("../mongoDB/products");
+const products = require("../models/products");
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix product

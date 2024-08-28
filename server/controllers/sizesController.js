@@ -1,4 +1,4 @@
-const sizes = require("../mongoDB/sizes");
+const sizes = require("../models/sizes");
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix sizies

@@ -1,4 +1,4 @@
-const final = require("../mongoDB/final");
+const final = require("../models/final");
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix final
