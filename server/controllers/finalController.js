@@ -1,4 +1,4 @@
-const final = require("../models/final");
+const final = require("../models/Final");
 
 exports.index = async (req, res) => {}; // get all | list all
 exports.show = async (req, res) => {}; // show specifix final

@@ -98,7 +98,7 @@ exports.login = [
     const { email, password } = req.body;
 
     //Find user by email in Users Model/Schemes
-    const user = users.users.find((user) => user.email === email);
+    const user = User.findOne({ email });
 
     //Handle case when user is not found
     if (!user) {

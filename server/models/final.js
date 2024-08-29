@@ -1,14 +1,13 @@
-exports.final = [
-  {
-    id: 0,
-    purchase_id: 2,
+const mongoose = require("mongoose");
+const FinalSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  purchase_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Purchase",
   },
-  {
-    id: 1,
-    purchase_id: 0,
-  },
-  {
-    id: 2,
-    purchase_id: 1,
-  },
-];
+});
+
+const Final = mongoose.model("Final", FinalSchema);
+
+module.exports = Final;

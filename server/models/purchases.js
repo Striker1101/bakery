@@ -1,23 +1,26 @@
-exports.purchases = [
-  {
-    id: 0,
-    product_id: 2,
-    user_id: 1,
-    deliver_method: "door-to-door",
-    track: "shop",
+const mongoose = require("mongoose");
+
+const PurchaseSchema = new mongoose.Schema({
+  product_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Product",
   },
-  {
-    id: 1,
-    product_id: 1,
-    user_id: 0,
-    deliver_method: "pick up station",
-    track: "Nigeria",
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
-  {
-    id: 2,
-    product_id: 3,
-    user_id: 1,
-    deliver_method: "door-to-door",
-    track: "Delta State",
+  deliver_method: {
+    type: String,
+    required: true,
+    enum: ["door-to-door", "pick up station"],
   },
-];
+  track: { type: String, required: true },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
+});
+
+const Purchase = mongoose.model("Purchase", PurchaseSchema);
+
+module.exports = Purchase;

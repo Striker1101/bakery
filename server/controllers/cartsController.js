@@ -1,4 +1,4 @@
-const _carts = require("../models/carts");
+const _carts = require("../models/Cart");
 
 exports.index = async (req, res) => {
   try {
