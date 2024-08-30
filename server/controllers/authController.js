@@ -8,13 +8,6 @@ const _environment = require("../Helpers/config");
 
 const environment = _environment.environment;
 
-exports.index = async (req, res) => {}; // get all | list all
-exports.show = async (req, res) => {}; // show specifix auth
-exports.create = async (req, res) => {}; // create a new auth
-exports.edit = async (req, res) => {}; // edit a auth
-exports.update = async (req, res) => {}; // update a auth
-exports.delete = async (req, res) => {}; // delete a auth
-
 exports.register = [
   check("full_name")
     .notEmpty()
@@ -98,7 +91,7 @@ exports.login = [
     const { email, password } = req.body;
 
     //Find user by email in Users Model/Schemes
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
 
     //Handle case when user is not found
     if (!user) {
@@ -133,10 +126,10 @@ exports.login = [
   },
 ];
 
-exports.ForgetPassword = (req, res) => {
+exports.ForgetPassword = async (req, res) => {
   const { email } = req.body;
 
-  const user = users.users.find((item) => item.email === email);
+  const user = await User.findOne({ email });
 
   if (!user) {
     return res.status(404).json({ message: "Email not found " });
@@ -145,18 +138,17 @@ exports.ForgetPassword = (req, res) => {
   const generate_random_token = Math.floor(Math.random() * 1000000);
   user.password_token = generate_random_token;
 
-  user.password_token_timer = new Date().toISOString();
+  user.password_token_timer = new Date();
 
   //update users model
-  const userindex = users.users.findIndex((u) => u.id === user.id);
-  users.users[userindex] = user;
+  await user.save();
 
   //send email to user
   sendEmail(
     email,
     "Password Reset Request",
     `here is your link to reset your password
-     ${environment.BACKEND_PORT}/api/auth/forget_password_confirmation?token=${generate_random_token}`
+     ${environment.BACKEND_PORT}/api/auth/forget_password_confirmation?token=${generate_random_token}&user_id=${user.id}`
   )
     .then(() => {
       return res
@@ -170,3 +162,66 @@ exports.ForgetPassword = (req, res) => {
       });
     });
 };
+
+exports.forgetPasswordConfirmation = [
+  check("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least six characters in length"),
+
+  check("confirm_password").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("Password confirmation does not match password");
+    }
+    return true;
+  }),
+
+  async (req, res) => {
+    // Validate the incoming request
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { password } = req.body;
+    const { token, user_id } = req.query;
+
+    try {
+      // Retrieve the user based on id
+      const user = await User.findById(user_id);
+
+      // Compare given token and user_token
+      if (user.password_token !== token) {
+        return res.status(400).json({ message: "Token is not correct" });
+      }
+
+      // Compare between user token timer and now
+      const tokenAge =
+        (new Date() - new Date(user.password_token_timer)) / 1000 / 60; // in minutes
+      if (tokenAge > 10) {
+        return res
+          .status(400)
+          .json({ message: "Token has expired, reset again" });
+      }
+
+      // Hash the new password and save it
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+
+      // Clear the token and timer after password reset
+      user.password_token = undefined;
+      user.password_token_timer = undefined;
+
+      // Save the updated user
+      await user.save();
+
+      // Respond with a success message
+      res.status(200).json({
+        message: `${user.username}'s password has been reset successfully`,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Server error", error: error.message });
+    }
+  },
+];

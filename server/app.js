@@ -32,6 +32,10 @@ app.use("/api/final", require("./routes/final"));
 app.use("/api/products", require("./routes/products"));
 app.use("/api/purchases", require("./routes/purchases"));
 app.use("/api/sizes", require("./routes/sizes"));
+app.use(
+  "/fg",
+  require("./controllers/authController").forgetPasswordConfirmation
+);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
