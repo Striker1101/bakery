@@ -1,125 +1,85 @@
+const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 
+// Get data for the authenticated user
 exports.index = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming req.user contains the authenticated user's data
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error retrieving user data", error: error.message });
+  }
+};
+
+// Get all users
+exports.getAll = async (req, res) => {
   try {
     const users = await User.find();
     return res.status(200).json(users);
   } catch (error) {
     return res
       .status(500)
-      .json({ message: "Error retrieving Users", error: error.message });
+      .json({ message: "Error retrieving users", error: error.message });
   }
-}; // get all | list all
+};
 
-exports.show = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const users = _users.users;
+// Update a user with validation
+exports.update = [
+  // Validate that the username is provided
+  check("username").not().isEmpty().withMessage("Username is required"),
 
-    const user = users.find((item) => item.id == id);
-    console.log(user);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+  async (req, res) => {
+    // Validate the request
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    res.status(200).json(user);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error retrieving product", error: error.message });
-  }
-}; // show specifix user
+    try {
+      const userId = req.user.id; // Assuming req.user contains the authenticated user's data
+      const { username } = req.body;
 
-exports.create = async (req, res) => {
-  try {
-    const { username, email, password, currency } = req.body;
+      // Update only the username
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { username },
+        { new: true } // Return the updated document
+      );
 
-    // Validate input
-    if (!username || !email || !password || !currency) {
-      return res.status(400).json({ message: "All fields are required" });
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      return res.status(200).json({
+        message: "Username updated successfully",
+        user: updatedUser,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Error updating username",
+        error: error.message,
+      });
     }
+  },
+];
 
-    const newUser = {
-      username,
-      email,
-      password,
-      currency,
-      password_token: "0000",
-      password_token_timer: null,
-    };
-
-    //add new users
-    _users.users.push(newUser);
-
-    res.status(201).json(newUser);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating user", error: error.message });
-  }
-}; // create a new user
-exports.edit = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const users = _users.users;
-    const user = users.find((item) => item.id === id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error retrieving user for editing",
-      error: error.message,
-    });
-  }
-}; // edit a user
-exports.update = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { username, email, password, currency } = req.body;
-
-    // Validate input
-    if (!username || !email || !password || !currency) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    const updatedUser = {
-      username,
-      email,
-      password,
-      currency,
-      password_token: "0000",
-      password_token_timer: null,
-    };
-
-    //find user index
-    const userIndex = _users.users.findIndex((item) => item === id);
-
-    _users.users[userIndex] = updatedUser;
-
-    res.status(201).json(updatedUser);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error creating user", error: error.message });
-  }
-}; // update a user
+// Delete a user
 exports.delete = async (req, res) => {
   try {
     const { id } = req.params;
-    let users = _users.users;
-    const userIndex = users.findIndex((item) => item.id === id);
+    const user = await User.findByIdAndDelete(id);
 
-    if (userIndex === -1) {
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Remove the user from the users array
-    users.splice(userIndex, 1);
 
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
@@ -128,4 +88,3 @@ exports.delete = async (req, res) => {
       .json({ message: "Error deleting user", error: error.message });
   }
 };
-// delete a user
