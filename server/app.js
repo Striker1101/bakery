@@ -6,11 +6,18 @@ var logger = require("morgan");
 const passport = require("passport");
 require("./passport");
 const connectDB = require("./database");
+const cors = require("cors");
 
 var app = express();
 
 //connect to MongoDB
 connectDB();
+//Enable Cors for all route
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 
 app.use(logger("dev"));
 app.use(express.json());
