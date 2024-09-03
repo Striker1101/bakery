@@ -42,7 +42,7 @@ exports.register = [
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ error: "Email is already in use" });
+      return res.status(409).json({ error: "Email is already in use" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

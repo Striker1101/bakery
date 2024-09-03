@@ -2,8 +2,19 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import postData from "../../utility/Axios/postData";
 import { toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 const Register = () => {
+  const navigate = useNavigate();
+  const toastOptions = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
+
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -24,14 +35,35 @@ const Register = () => {
     e.preventDefault();
     const result = await postData(
       `${process.env.REACT_APP_BACKEND_URL}auth/register`,
-      formData,
-      "User Created Succesfully"
+      formData
     );
-    console.log(result);
-    if (result.status == 200) {
-      localStorage.setItem("token", result.token);
+    if (result.status) {
+      toast.success("User Created Successfully", toastOptions);
 
-      //redirect to shop
+      console.log(result.data);
+      //save token to local storage
+      localStorage.setItem("auth", JSON.stringify(result.data));
+
+      //redirect to shop path
+      setTimeout(() => {
+        navigate("/shop");
+      }, 3000);
+    } else {
+      if (result.data.response.status == 400 || result.data.status === 400) {
+        if (result.data.response.data.errors) {
+          const errors = result.data.response.data.errors;
+          errors.forEach((error) => {
+            toast.error(`Error: ${error.msg}`, toastOptions);
+          });
+        }
+      } else if (
+        result.data.response.status == 409 ||
+        result.data.status === 409
+      ) {
+        toast.error(`Error: ${result.data.response.data.error}`, toastOptions);
+      } else {
+        toast.error("An unexpected error occurred", toastOptions);
+      }
     }
   };
 

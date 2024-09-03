@@ -40,4 +40,8 @@
           ### reason
                 - confirm password not similar to password
 
+      message("Email is already in use")(409)
+          ### reason
+                - the email has already been registered to the database
+
 # Login Routes
